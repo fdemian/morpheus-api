@@ -1,0 +1,29 @@
+[[source]]
+name = "pypi"
+url = "https://pypi.org/simple"
+verify_ssl = true
+
+[dev-packages]
+pipfile-requirements = "*"
+
+[packages]
+alembic = "*"
+appdirs = "*"
+distlib = "*"
+ecdsa = "*"
+future = "*"
+psycopg2 = "*"
+py-bcrypt = "*"
+pyparsing = "*"
+python-dateutil = "*"
+simplejson = "*"
+six = "*"
+sqlalchemy = "*"
+tornado = "*"
+Beaker = "*"
+MarkupSafe = "*"
+pyCLI = "*"
+PyJWT = "*"
+
+[requires]
+python_version = "3.7"
