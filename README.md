@@ -8,8 +8,8 @@ Morpheus's REST API.
 
  To run this in your local environment you must install the following dependencies first:
 
- - Python 3.4+
- - PostgreSQL 9.6
+ - Python 3.7+
+ - PostgreSQL 10+
  
 ### Installation
 
@@ -19,7 +19,7 @@ Morpheus's REST API.
  
  2) Run the application configuration:
    
-  ```python
+  ```
   python3 setup.py 
   ```
 
@@ -27,9 +27,19 @@ Morpheus's REST API.
   
  3) Run the application 
 
- ```python
- <python3> main.py
  ```
+ python3 main.py
+ ```
+ 
+ ### Adding users
+ 
+ Use moderator control panel (modcp) to add users. 
+ 
+```
+python3 modcp.py
+```
+
+Pick a username, name, valid email and password.
  
  ## Testing
  
