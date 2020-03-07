@@ -10,11 +10,9 @@ class Notifications(WebSocketHandler):
         pass
 
     def initialize(self):
-        print("initialize");
         self.settings['notifications_handler'] = self
 
     def open(self):
-        print("initialize");
         self.settings['notifications_handler'] = self
 
     # Notifications for a given user were requested.
