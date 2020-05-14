@@ -47,6 +47,7 @@ class CommentsHandler(AuthenticatedHandler):
             else:
               # TODO: validate user login.
               author = session.query(User).filter(User.username == author_name).one()
+              story_author = session.query(User).filter(User.username == author.username).one()
               comment.author = author.username
 
 
@@ -75,7 +76,7 @@ class CommentsHandler(AuthenticatedHandler):
                 link = "/stories/" + str(story.id) + "/" + story.title
 
                 notification_id = self.save_notification(session, author, "comment", text, link)
-                self.notify_new_comment(text, link, notification_id)
+                self.notify_new_comment(text, link, notification_id, story_author.id)
 
             response = json_comment
             status = 200
@@ -164,9 +165,13 @@ class CommentsHandler(AuthenticatedHandler):
 
         return
 
-    def notify_new_comment(self, text, link, id):
+    def notify_new_comment(self, text, link, id, author_id):
 
-        notifications_handler = self.settings['notifications_handler']
+        notifications_handler = self.settings['notification_handlers'][str(author_id)]
+
+        # The story author is not online. There's no need to send a notification.
+        if notifications_handler is None:
+            return
 
         message = {
            'id': id,

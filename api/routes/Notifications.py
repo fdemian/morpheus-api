@@ -9,13 +9,12 @@ class Notifications(WebSocketHandler):
     def data_received(self, chunk):
         pass
 
-    def initialize(self):
-        self.settings['notifications_handler'] = self
+    def initialize(self,):
+        pass
 
-    def open(self):
-        self.settings['notifications_handler'] = self
+    def open(self, id):
+        self.settings['notification_handlers'][str(id)] = self
 
-    # Notifications for a given user were requested.
     def on_message(self, message):
         print(message)
 

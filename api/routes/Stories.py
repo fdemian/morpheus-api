@@ -149,8 +149,9 @@ class StoriesHandler(AuthenticatedHandler):
         self.set_status(200, 'Ok')
         self.set_header("Access-Control-Allow-Origin", "*")
         self.write(json.dumps(json_story))
-	
-	# PUT /stories/:story_id
+
+
+    # PUT /stories/:story_id
     @authenticated
     def put(self, story_id):
 

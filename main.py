@@ -19,6 +19,7 @@ if __name__ == "__main__":
     options = load_options(config_file)
     session_object = get_global_session(options)
     session = session_object()
+    options['notification_handlers'] = dict([])
     routes = get_app_routes(static_path, options['notifications_enabled'])
     application = tornado.web.Application(routes, db=session, **options)
     app_port = options["port"]

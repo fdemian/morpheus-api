@@ -22,7 +22,6 @@ from tornado.web import StaticFileHandler
 def get_app_routes(static_path, notifications_enabled):
 
     routes = [
-       (r"/api/notifications", Notifications),
        (r"/api/notifications/(.*)", Notifications),
        (r"/api/drafts/([0-9]+)", DraftsHandler),
        (r"/api/drafts", DraftsHandler),
