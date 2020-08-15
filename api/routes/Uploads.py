@@ -53,7 +53,8 @@ class PUTHandler(AuthenticatedHandler):
                 user.avatar = file_path
                 session.commit()
 
-                self.delete_file(old_avatar_name)
+                if old_avatar_name is not None:
+                    self.delete_file(old_avatar_name)
 
 
 
