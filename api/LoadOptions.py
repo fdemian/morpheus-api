@@ -5,6 +5,7 @@ def load_options(config_file):
 
     # Blog options
     define('blog_name', type=str, group='application', help='Name of the blog.')
+    define("description", type=str, group='application', help='Description of the blog.')
 
     # General application settings
     define('port', type=int, group='application', help='Port to run the application from.')

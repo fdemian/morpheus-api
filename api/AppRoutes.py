@@ -18,6 +18,7 @@ from api.routes.Uploads import PUTHandler
 from api.routes.GlobalOptions import GlobalConfigurationHandler
 from api.routes.GoogleOauth import GoogleAuthService
 from tornado.web import StaticFileHandler
+from os import path
 
 def get_app_routes(static_path, notifications_enabled):
 
@@ -52,6 +53,7 @@ def get_app_routes(static_path, notifications_enabled):
        (r"/static/(.*)", StaticFileHandler, {"path": static_path}),
        (r"/(manifest\.json)", StaticFileHandler, {"path": static_path}),
        (r"/(favicon\.ico)", StaticFileHandler, {"path": static_path}),
+       (r"/(robots\.txt)", StaticFileHandler, {"path": static_path}),
        (r"/.*", IndexHandler)
     ]
 

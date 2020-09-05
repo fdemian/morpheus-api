@@ -27,7 +27,8 @@ class ConfigHandler(RequestHandler):
                             'authorizeURL': self.settings["google_redirect_url"],
                     }],
                 "notificationsEnabled": self.settings['notifications_enabled'],
-                "blogName": self.settings['blog_name']
+                "blogName": self.settings['blog_name'],
+                "description": self.settings['description']
             }
 
             self.set_status(200, 'Ok')
