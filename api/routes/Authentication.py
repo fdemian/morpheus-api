@@ -37,18 +37,18 @@ class Authentication(RequestHandler):
             if user is not None:
 
               jwt_token = self.perform_authentication(user, auth_type, '3600')
+              str_token = str(jwt_token.decode('utf-8'))
+              user_id = str(user['id'])
+              token_header = "access_token=" + str_token
 
-              response = {
-                'token': jwt_token.decode('utf-8'),
-                'user': user,
-                'type': auth_type
-              }
+              response = {'id': user_id }
 
               self.set_status(200, 'Ok')
               self.set_header("Access-Control-Allow-Origin", "*")
-              self.write(response)
+              self.set_header("Set-Cookie", token_header)
 
-              return user
+              self.write(response)
+              return
 
             else:
               response = {'message': "The user/password combination is invalid."}
