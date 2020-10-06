@@ -24,6 +24,7 @@ Beaker = "*"
 MarkupSafe = "*"
 pyCLI = "*"
 PyJWT = "*"
+pillow = "*"
 
 [requires]
 python_version = "3.7"

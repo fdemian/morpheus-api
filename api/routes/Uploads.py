@@ -3,7 +3,7 @@ import uuid
 from api.authentication.AuthenticatedHandler import AuthenticatedHandler
 from api.Utils import authenticated
 from api.model.models import User
-
+from api.ImageUtils import resize_image
 
 class PUTHandler(AuthenticatedHandler):
     @authenticated
@@ -56,8 +56,6 @@ class PUTHandler(AuthenticatedHandler):
                 if old_avatar_name is not None:
                     self.delete_file(old_avatar_name)
 
-
-
         response = {'path': file_path}
         self.set_status(200, "Ok")
         self.set_header("Access-Control-Allow-Origin", "*")
@@ -66,11 +64,18 @@ class PUTHandler(AuthenticatedHandler):
 
     @staticmethod
     def save_file(name, extension, content):
+
+        # Save image.
         filename = name + extension
         current_dir = os.getcwd()
         file_path = os.path.join(current_dir, "static/avatars/") + filename
         with open(file_path, 'wb') as f:
             f.write(content)
+
+        # Saved miniature size version.
+        file_path_resized = os.path.join(current_dir, "static/avatars/") + "_reduced_" + filename
+        resized = resize_image(file_path, 50, 50)
+        resized.save(file_path_resized)
 
         return filename
 

@@ -20,6 +20,16 @@ from api.routes.GoogleOauth import GoogleAuthService
 from tornado.web import StaticFileHandler
 from os import path
 
+
+class CachedFileHandler(StaticFileHandler):
+
+    def set_extra_headers(self, path):
+        print(":::::::::")
+        # Disable cache
+        self.set_header('Cache-Control', 'public, max-age=31536000')
+        self.set_header('X-Cache-Control', 'public, max-age=31536000')
+
+
 def get_app_routes(static_path, notifications_enabled):
 
     routes = [
@@ -50,10 +60,10 @@ def get_app_routes(static_path, notifications_enabled):
        #(r"/api/uploads", UploadHandler),
        # (r"/api/uploads/(.*)", PUTHandler),
        (r"/api/(.*)", NotFoundHandler),
-       (r"/static/(.*)", StaticFileHandler, {"path": static_path}),
-       (r"/(manifest\.json)", StaticFileHandler, {"path": static_path}),
-       (r"/(favicon\.ico)", StaticFileHandler, {"path": static_path}),
-       (r"/(robots\.txt)", StaticFileHandler, {"path": static_path}),
+       (r"/static/(.*)", CachedFileHandler, {"path": static_path}),
+       (r"/(manifest\.json)", CachedFileHandler, {"path": static_path}),
+       (r"/(favicon\.png)", CachedFileHandler, {"path": static_path}),
+       (r"/(robots\.txt)", CachedFileHandler, {"path": static_path}),
        (r"/.*", IndexHandler)
     ]
 

@@ -5,12 +5,13 @@ from tornado.web import RequestHandler
 class AuthenticatedHandler(RequestHandler):
 
     def get_current_user(self):
-        auth_headers = self.request.headers.get("Authorization")
+        #auth_headers = self.request.headers.get("Authorization")
+        auth_headers = self.request.headers.get("Cookie")
 
         if auth_headers is None:
             return None
-
-        jwt_token = auth_headers.split(" ")[1]
+        
+        jwt_token = auth_headers.split("=")[1]
         jwt_secret = self.settings["jwt_secret"]
         jwt_algorhitm = self.settings["jwt_algorithm"]
         validated_user = validate_token(jwt_token, jwt_secret, jwt_algorhitm)
