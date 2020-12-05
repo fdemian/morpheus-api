@@ -7,7 +7,6 @@ from api.authentication.AuthenticatedHandler import AuthenticatedHandler
 from api.mail.ConcreteMailSender import ConcreteMailSender
 from api.SendEmail import send_confirmation_email
 from api.authentication.Database import DatabaseAuthService
-from api.authentication.OAuthService import OAuthService
 from api.model.models import User
 from api.Utils import get_oauth_settings
 from tornado.gen import coroutine
@@ -115,46 +114,31 @@ class UsersHandler(RequestHandler):
         json_request = json.loads(json.loads(request))
         register_type = json_request["type"]
 
-        if register_type == "database":
+        authentication = DatabaseAuthService()
+        validate_email = self.settings['validate_user_email']
+        session = self.settings['db']
 
-            authentication = DatabaseAuthService()
-            validate_email = self.settings['validate_user_email']
-            session = self.settings['db']
-
-            if validate_email:
-               activation_code = str(uuid.uuid4())
-               user_to_validate = authentication.register_user(session, json_request, activation_code,is_valid=False)
-               self.send_email(user_to_validate, activation_code)
-            else:
-               user_to_validate = authentication.register_user(session, json_request, None, is_valid=True)
-
-            if user_to_validate is not None:
-                resp_status = 200
-                response = {'validated': False, 'user': None, 'token': None, 'type': 'database'}
-            else:
-                resp_status = 500
-                response = {"message": "An error ocurred."}
-
+        if validate_email:
+           activation_code = str(uuid.uuid4())
+           user_to_validate = authentication.register_user(session, json_request, activation_code,is_valid=False)
+           self.send_email(user_to_validate, activation_code)
         else:
-            auth_code = json_request["code"]
-            redirect_uri = json_request["redirectURL"]
-            oauth_settings = get_oauth_settings(self.settings)
-            authentication = OAuthService(oauth_settings)
-            registered_user = yield authentication.register_user(register_type, auth_code, redirect_uri)
-            if registered_user is not None:
-                resp_status = 200
-                jwt_token = self.perform_authentication(registered_user, register_type, '3600')
-                response = {'validated': True, 'user': registered_user, 'token': jwt_token.decode('utf-8'), 'type': register_type}
+           user_to_validate = authentication.register_user(session, json_request, None, is_valid=True)
 
-            else:
-                resp_status = 500
-                response = {"message": "An error ocurred registering the user."}
+        if user_to_validate is not None:
+            resp_status = 200
+            response = {'validated': False, 'user': None, 'token': None, 'type': 'database'}
+        else:
+            resp_status = 500
+            response = {"message": "An error ocurred."}
 
         self.set_status(resp_status, 'Ok')
         self.set_header("Access-Control-Allow-Origin", "*")
         self.write(response)
 
         return
+
+
 
     @coroutine
     def put(self):
