@@ -72,6 +72,7 @@ class StoriesHandler(AuthenticatedHandler):
             PAGE_SIZE = 5
             OFFSET = PAGE_SIZE * (page_number-1)
             all_stories = session.query(Story).filter(Story.is_draft == False).order_by(Story.id.desc()).limit(PAGE_SIZE).offset(OFFSET)
+            row_count = session.query(Story).count()
             data = []
 
             for story in all_stories:
@@ -98,7 +99,12 @@ class StoriesHandler(AuthenticatedHandler):
 
                 data.append(json_story)
 
-            response = {"page": page_number, "items": data}
+            response = {
+               "page": page_number,
+               "items": data,
+               "pageSize": PAGE_SIZE,
+               "totalItems": row_count
+            }
 
             self.set_header("Content-Type", "application/jsonp;charset=UTF-8")
             self.set_header("Access-Control-Allow-Origin", "*")
