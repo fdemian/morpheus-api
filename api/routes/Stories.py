@@ -68,9 +68,9 @@ class StoriesHandler(AuthenticatedHandler):
 
         else:
             # Hardcoded page page size. Move to configuration options.
-            page_number = int(self.get_argument("page", default=1))
+            page_number = int(self.get_argument("page", default=0))
             PAGE_SIZE = 5
-            OFFSET = PAGE_SIZE * (page_number-1)
+            OFFSET = PAGE_SIZE * page_number
             all_stories = session.query(Story).filter(Story.is_draft == False).order_by(Story.id.desc()).limit(PAGE_SIZE).offset(OFFSET)
             row_count = session.query(Story).count()
             data = []
