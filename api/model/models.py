@@ -72,7 +72,7 @@ class Story(Base):
     date = Column(DateTime, nullable=False)
     is_draft = Column(Boolean, nullable=False)
 
-    author = relationship("User")
+    author = relationship("User", viewonly=True)
     category = relationship("Category", backref="stories")
     comments = relationship("Comment", backref="story")
 
@@ -86,7 +86,7 @@ class Category(Base):
     id = Column(Integer, primary_key=True, nullable=False)
     name = Column(Unicode(50), nullable=False)
     description = Column(Text, nullable=True)
-    
+
     def __repr__(self):
         return '<%s %s>' % (self.id, self.name)
 
