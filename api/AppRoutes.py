@@ -17,17 +17,29 @@ from api.routes.NotFound import NotFoundHandler
 from api.routes.Uploads import PUTHandler
 from api.routes.GlobalOptions import GlobalConfigurationHandler
 from api.routes.GoogleOauth import GoogleAuthService
-from tornado.web import StaticFileHandler
-from os import path
 
+from tornado.web import StaticFileHandler
 
 class CachedFileHandler(StaticFileHandler):
 
-    def set_extra_headers(self, path):
-        print(":::::::::")
-        # Disable cache
-        self.set_header('Cache-Control', 'public, max-age=31536000')
-        self.set_header('X-Cache-Control', 'public, max-age=31536000')
+    @classmethod
+    def set_headers(self):
+        print(":::::")
+        self.set_header("Cache-Control", "public, max-age=3100")
+        self.set_header("X-Cache-Control", "public, max-age=3100")
+        self.set_header("X-Pepocho", "0000")
+
+    @classmethod
+    def set_extra_headers(self):
+        print(":::::")
+        self.set_header("Cache-Control", "public, max-age=3100")
+        self.set_header("X-Cache-Control", "public, max-age=3100")
+        self.set_header("X-Pepocho", "0000")
+
+    @classmethod
+    def get_cache_time(self):
+        print(":::::")
+        return 31000
 
 
 def get_app_routes(static_path, notifications_enabled):
@@ -60,11 +72,12 @@ def get_app_routes(static_path, notifications_enabled):
        #(r"/api/uploads", UploadHandler),
        # (r"/api/uploads/(.*)", PUTHandler),
        (r"/api/(.*)", NotFoundHandler),
-       (r"/static/(.*)", CachedFileHandler, {"path": static_path}),
-       (r"/(manifest\.json)", CachedFileHandler, {"path": static_path}),
-       (r"/(favicon\.png)", CachedFileHandler, {"path": static_path}),
-       (r"/(robots\.txt)", CachedFileHandler, {"path": static_path}),
-       (r"/.*", IndexHandler)
+       #(r'/(.*)', CachedFileHandler, {'path': static_path, 'default_filename':'index.html'}),
+       #(r"/(manifest\.json)", AlertsHandler, {"path": static_path}),
+       #(r"/(favicon\.png)", AlertsHandler, {"path": static_path}),
+       #(r"/(robots\.txt)", AlertsHandler, {"path": static_path}),
+       #(r"/static/(.*)", CachedFileHandler, {"path": static_path}),
+       #(r"/.*", IndexHandler)
     ]
 
     return routes
