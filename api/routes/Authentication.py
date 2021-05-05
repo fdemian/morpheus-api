@@ -1,7 +1,6 @@
 import jwt
 import json
 from datetime import datetime, timedelta
-from api.authentication.OAuthService import OAuthService
 from api.authentication.Database import DatabaseAuthService
 from api.authentication.AuthExceptions import OAuthFailedException, NoSuchServiceException, InvalidUserException
 from api.Utils import get_oauth_settings
@@ -26,13 +25,8 @@ class Authentication(RequestHandler):
             username = json_request['username']
             password = json_request['password']
 
-            if auth_type == "database":
-                authentication = DatabaseAuthService()
-                user = authentication.authenticate_user(username, password, self.settings)
-            else:
-                oauth_settings = get_oauth_settings(self.settings)
-                authentication = OAuthService(oauth_settings)
-                user = await authentication.get_user_by_service(auth_type, auth_code, redirect_url)
+            authentication = DatabaseAuthService()
+            user = authentication.authenticate_user(username, password, self.settings)
 
             if user is not None:
 

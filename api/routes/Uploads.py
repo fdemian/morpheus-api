@@ -33,7 +33,7 @@ class PUTHandler(AuthenticatedHandler):
 
                 filtered_type = [x for x in allowed_types if x['type'] == content_type]
 
-                if len(filtered_type) is not 1:
+                if len(filtered_type) != 1:
                     response = {'Error': 'Only JPEG and PNG files are allowed.'}
                     self.set_status(400, "Error")
                     self.set_header("Access-Control-Allow-Origin", "*")

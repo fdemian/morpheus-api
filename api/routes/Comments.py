@@ -26,7 +26,7 @@ class CommentsHandler(AuthenticatedHandler):
 
         request = self.request.body.decode("utf-8")
         json_request = json.loads(json.loads(request))
-               
+
         author_name = json_request["name"]
         content = json.dumps(json_request["content"])
         avatar = json_request["avatar"]
@@ -35,10 +35,12 @@ class CommentsHandler(AuthenticatedHandler):
         author = None
         current_date = datetime.datetime.now()
 
+        print(is_anonymous)
 
         try:
             session = self.settings['db']
             story = session.query(Story).filter(Story.id == story_id).one()
+
             comment = Comment()
 
             if is_anonymous:
@@ -86,7 +88,7 @@ class CommentsHandler(AuthenticatedHandler):
             # User or story not found in database
             status = 500
             status_str = "Error"
-            response = {'message': 'Story does not exist.'}
+            response = {'message': 'User or story does not exist.'}
 
         except MultipleResultsFound:
             status = 500

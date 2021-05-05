@@ -66,7 +66,7 @@ class CategoryHandler(AuthenticatedHandler):
         self.set_header("Content-Type", "test/plain;charset=UTF-8")
         self.set_header("Access-Control-Allow-Origin", "*")
         self.set_header("Access-Control-Allow-Headers", "Authorization")
-        self.set_header("Access-Control-Allow-Methods ", "GET, POST, DELETE, OPTIONS")		
+        self.set_header("Access-Control-Allow-Methods ", "GET, POST, DELETE, OPTIONS")
         self.set_status(200, "Ok")
         self.write(response)
 
@@ -88,9 +88,19 @@ class CategoryTopicsHandler(RequestHandler):
         data = []
 
         for story in category_stories:
+
+            if story.category is None:
+                category = {'id': -1, 'name': "uncatalogued"}
+            else:
+                category = {'id': story.category.id, 'name': story.category.name}
+
             json_item = {
                 'id': story.id,
                 'name': story.title,
+                'title': story.title,
+                'date': str(story.date),
+                'comments': len(story.comments),
+                'category': category,
                 'author': {
                     'id': story.user.id,
                     'name': story.user.username,
@@ -116,7 +126,7 @@ class CategoryTopicsHandler(RequestHandler):
         self.set_header("Content-Type", "test/plain;charset=UTF-8")
         self.set_header("Access-Control-Allow-Origin", "*")
         self.set_header("Access-Control-Allow-Headers", "Authorization")
-        self.set_header("Access-Control-Allow-Methods ", "GET, POST, DELETE, OPTIONS")		
+        self.set_header("Access-Control-Allow-Methods ", "GET, POST, DELETE, OPTIONS")
         self.set_status(200, "Ok")
         self.write(response)
 
@@ -158,7 +168,7 @@ class CategoriesHandler(AuthenticatedHandler):
         self.set_header("Content-Type", "test/plain;charset=UTF-8")
         self.set_header("Access-Control-Allow-Origin", "*")
         self.set_header("Access-Control-Allow-Headers", "Authorization")
-        self.set_header("Access-Control-Allow-Methods ", "GET, POST, DELETE, OPTIONS")		
+        self.set_header("Access-Control-Allow-Methods ", "GET, POST, DELETE, OPTIONS")
         self.set_status(200, "Ok")
         self.write(response)
 
