@@ -335,6 +335,7 @@ class StoriesByUserHandler(RequestHandler):
                     'avatar': user.avatar,
                     'signature': user.signature
                 },
+                'date': str(story.date),
                 'comments': len(story.comments),
                 'category': category
             }

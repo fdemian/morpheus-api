@@ -90,7 +90,7 @@ class PUTHandler(AuthenticatedHandler):
         self.set_header("Content-Type", "application/json;charset=UTF-8")
         self.set_header("Accept", "multipart/form-data, '*'")
         self.set_header("Access-Control-Allow-Origin", "*")
-        self.set_header("Access-Control-Allow-Headers", "Authorization, Content-Type,  X-Requested-With")
+        #self.set_header("Access-Control-Allow-Headers", "Authorization, Content-Type,  X-Requested-With")
         self.set_header("Access-Control-Allow-Methods ", "GET, POST, PUT, DELETE, OPTIONS")
         self.set_status(200, "Ok")
         self.write(response)
